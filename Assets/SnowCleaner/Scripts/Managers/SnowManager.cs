@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SnowCleaner.Scripts.Core.ServiceLocator;
 using SnowCleaner.Scripts.Entities;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 namespace SnowCleaner.Scripts.Managers
 {
@@ -24,6 +25,13 @@ namespace SnowCleaner.Scripts.Managers
         private Snow _currentSnow = null;
 
         private bool _isSnowCleaner = false;
+        private RenderTexture _renderTexture;
+
+        private void Awake()
+        {
+            _renderTexture = new RenderTexture(1024, 1024, 0);
+            // _renderTexture.format = RenderTextureFormat.Default;
+        }
 
         public void RegisterSnow(Snow snow)
         {
@@ -55,12 +63,17 @@ namespace SnowCleaner.Scripts.Managers
                 _currentIdSnow = id; 
                 _currentSnow = snow;
                 
-                _currentSnow.Initialize(_maskRenderTexture, _maskTexture, _brushSize);
+                _currentSnow.Initialize(_renderTexture, _maskTexture, _brushSize);
                 OcSnowClearStart?.Invoke();
                 _isSnowCleaner = true;
             }
             
             _currentSnow.Clean(hit);
+        }
+
+        private void OnDestroy()
+        {
+            Destroy(_renderTexture);
         }
     }
 }

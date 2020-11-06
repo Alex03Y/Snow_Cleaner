@@ -58,7 +58,7 @@ namespace SnowCleaner.Scripts.Managers
                 OnSingleTouchHold?.Invoke(touch.position);
             else if (touch.phase == TouchPhase.Ended)
             {
-                if(_beginSingleTouchTime > 0f && Time.time - _beginSingleTouchTime > 0.1f) return;
+                // if(_beginSingleTouchTime > 0f && Time.time - _beginSingleTouchTime > 0.1f) return;
                 _beginSingleTouchTime = 0f;
                 
                 OnSingleTouchEnded?.Invoke(touch.position);
